@@ -75,14 +75,15 @@ pub fn get_clipboard_provider() -> Box<dyn ClipboardProvider> {
 pub fn get_clipboard_provider() -> Box<dyn ClipboardProvider> {
     use helix_stdx::env::{binary_exists, env_var_is_set};
 
-    if env_var_is_set("TMUX") && binary_exists("tmux") {
-        command_provider! {
-            paste => "tmux", "save-buffer", "-";
-            copy => "tmux", "load-buffer", "-w", "-";
-            primary_paste => "tmux", "save-buffer", "-";
-            primary_copy => "tmux", "load-buffer", "-w", "-";
-        }
-    } else if binary_exists("pbcopy") && binary_exists("pbpaste") {
+    // if env_var_is_set("TMUX") && binary_exists("tmux") {
+    //     command_provider! {
+    //         paste => "tmux", "save-buffer", "-";
+    //         copy => "tmux", "load-buffer", "-w", "-";
+    //         primary_paste => "tmux", "save-buffer", "-";
+    //         primary_copy => "tmux", "load-buffer", "-w", "-";
+    //     }
+    // } else
+     if binary_exists("pbcopy") && binary_exists("pbpaste") {
         command_provider! {
             paste => "pbpaste";
             copy => "pbcopy";
@@ -144,14 +145,16 @@ pub fn get_clipboard_provider() -> Box<dyn ClipboardProvider> {
             primary_paste => "termux-clipboard-get";
             primary_copy => "termux-clipboard-set";
         }
-    } else if env_var_is_set("TMUX") && binary_exists("tmux") {
-        command_provider! {
-            paste => "tmux", "save-buffer", "-";
-            copy => "tmux", "load-buffer", "-w", "-";
-            primary_paste => "tmux", "save-buffer", "-";
-            primary_copy => "tmux", "load-buffer", "-w", "-";
-        }
-    } else {
+    } 
+    //else if env_var_is_set("TMUX") && binary_exists("tmux") {
+    //     command_provider! {
+    //         paste => "tmux", "save-buffer", "-";
+    //         copy => "tmux", "load-buffer", "-w", "-";
+    //         primary_paste => "tmux", "save-buffer", "-";
+    //         primary_copy => "tmux", "load-buffer", "-w", "-";
+    //     }
+    // }
+     else {
         Box::new(provider::FallbackProvider::new())
     }
 }
